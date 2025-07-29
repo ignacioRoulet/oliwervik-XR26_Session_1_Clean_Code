@@ -6,20 +6,15 @@ public class UIManager : MonoBehaviour, IUIManager
 {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Slider healthBar;
-    private float maxHealth = 30f;
     [SerializeField] private TextMeshProUGUI statusText;
     [SerializeField] private GameObject gameOverPanel;
     [SerializeField] private TextMeshProUGUI timerText;
 
-    private void Start()
+    public void SetMaxHealth(float max)
     {
         if (healthBar != null)
-        {
-            healthBar.maxValue = maxHealth;
-            healthBar.value = maxHealth;
-        }
+            healthBar.maxValue = max;
     }
-
     public void UpdateHealth(float health)
     {
         if (healthBar != null)

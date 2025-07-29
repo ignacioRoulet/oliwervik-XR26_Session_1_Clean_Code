@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour, IGameStateManager
 
         uiManager?.SetGameStatus("Game Started!");
         uiManager?.ToggleGameOverPanel(false);
+        uiManager?.SetMaxHealth(player.MaxHealth);
+        uiManager?.UpdateHealth(player.CurrentHealth);
     }
 
     private void Update()

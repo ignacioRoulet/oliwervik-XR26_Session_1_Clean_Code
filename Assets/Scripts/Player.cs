@@ -12,6 +12,7 @@ public class Player : MonoBehaviour, IHealthSystem, IScoreSystem
     private bool isGrounded;
     private float yaw;
 
+    public float MaxHealth { get; private set; } = 30f;
     public float CurrentHealth { get; private set; } = 30f;
     public int Score { get; private set; } = 0;
 
