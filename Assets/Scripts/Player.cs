@@ -34,6 +34,11 @@ public class Player : MonoBehaviour, IHealthSystem, IScoreSystem
         controller?.ProcessInput(rb, transform, ref isGrounded);
     }
 
+    private void FixedUpdate()
+    {
+        controller?.ApplyMovement(rb, transform);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         switch (collision.gameObject.tag)
