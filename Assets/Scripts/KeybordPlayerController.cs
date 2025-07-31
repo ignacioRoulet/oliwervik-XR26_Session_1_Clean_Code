@@ -9,7 +9,6 @@ public class KeyboardPlayerController : IPlayerController
     private float yaw;
     private float hInput;
     private float vInput;
-    private bool jumpRequested;
 
     public KeyboardPlayerController(float moveSpeed, float jumpForce, float rotationSpeed)
     {
