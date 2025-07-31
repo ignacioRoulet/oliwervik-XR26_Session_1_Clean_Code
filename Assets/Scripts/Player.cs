@@ -11,14 +11,14 @@ public class Player : MonoBehaviour, IHealthSystem, IScoreSystem
     private Rigidbody rb;
     private bool isGrounded;
 
+    private IPlayerController controller;
+
     public float MaxHealth { get; private set; } = 30f;
-    public float CurrentHealth { get; private set; }
-    public int Score { get; private set; }
+    public float CurrentHealth { get; private set; } = 30f;
+    public int Score { get; private set; } = 0;
 
     public UnityEvent OnCollected = new UnityEvent();
     public UnityEvent OnDamaged = new UnityEvent();
-
-    private IPlayerController controller;
 
     private void Start()
     {
@@ -26,26 +26,12 @@ public class Player : MonoBehaviour, IHealthSystem, IScoreSystem
         rb.freezeRotation = true;
         Cursor.lockState = CursorLockMode.Locked;
 
-        CurrentHealth = MaxHealth;
-        Score = 0;
-
-        controller = new KeyboardPlayerController(moveSpeed, rotationSpeed);
+        controller = new KeyboardPlayerController(moveSpeed, jumpForce, rotationSpeed);
     }
 
     private void Update()
     {
-        controller?.ApplyRotation(transform);
-
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        controller?.ApplyMovement(rb);
+        controller?.ProcessInput(rb, transform, ref isGrounded);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -57,7 +43,7 @@ public class Player : MonoBehaviour, IHealthSystem, IScoreSystem
                 break;
 
             case "Collectible":
-                Score += 10;
+                AddScore(10);
                 OnCollected.Invoke();
                 Destroy(collision.gameObject);
                 break;
@@ -70,13 +56,13 @@ public class Player : MonoBehaviour, IHealthSystem, IScoreSystem
         }
     }
 
-    public void TakeDamage(float amount)
-    {
-        CurrentHealth = Mathf.Max(CurrentHealth - amount, 0);
-    }
-
     public void AddScore(int amount)
     {
         Score += amount;
+    }
+
+    public void TakeDamage(float amount)
+    {
+        CurrentHealth = Mathf.Max(CurrentHealth - amount, 0);
     }
 }

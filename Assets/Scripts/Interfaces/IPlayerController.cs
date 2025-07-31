@@ -2,6 +2,5 @@ using UnityEngine;
 
 public interface IPlayerController
 {
-    void ApplyMovement(Rigidbody rb);
-    void ApplyRotation(Transform transform);
+    void ProcessInput(Rigidbody rb, Transform transform, ref bool isGrounded);
 }
